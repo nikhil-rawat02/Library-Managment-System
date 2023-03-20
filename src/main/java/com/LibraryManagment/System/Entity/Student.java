@@ -2,16 +2,12 @@ package com.LibraryManagment.System.Entity;
 
 import com.LibraryManagment.System.Enum.Department;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Student {
 
     @Id
@@ -25,6 +21,7 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private Department department;
 
+    @Column(unique = true)
     private String email;
 
     @OneToOne(mappedBy ="student",cascade = CascadeType.ALL)
