@@ -2,6 +2,7 @@ package com.LibraryManagment.System.Service;
 
 import com.LibraryManagment.System.DTO.AuthorRequestDto;
 import com.LibraryManagment.System.DTO.AuthorResponseDto;
+import com.LibraryManagment.System.DTO.BookResponseDto;
 import com.LibraryManagment.System.DTO.GetAllAuthorsResponseDto;
 import com.LibraryManagment.System.Entity.Author;
 import com.LibraryManagment.System.Entity.Book;
@@ -38,22 +39,46 @@ public class AuthorService {
     }
 
     public List<GetAllAuthorsResponseDto> getAuthors()  {
-        List<Author> authors;
+        List<Integer> authorIds = new ArrayList<>();
         List<GetAllAuthorsResponseDto> getAllAuthorsResponseDtos = new ArrayList<>();
-        try{
-            authors= authorRepository.findAll();
-
-            for(Author author: authors){
-                GetAllAuthorsResponseDto getAllAuthorsResponseDto = new GetAllAuthorsResponseDto();
-                getAllAuthorsResponseDto.setName(author.getName());
-                getAllAuthorsResponseDto.setAge(author.getAge());
-                getAllAuthorsResponseDto.setRating(author.getRating());
-                getAllAuthorsResponseDto.setEmail(author.getEmail());
-                getAllAuthorsResponseDto.setBooks(author.getBooks());
-                getAllAuthorsResponseDtos.add(getAllAuthorsResponseDto);
-            }
+        try {
+            authorIds = authorRepository.findAllAuthors();
         }catch (Exception e){
             e.printStackTrace();
+        }
+        for(Integer authorId: authorIds){
+            Author author = authorRepository.findById(authorId).get();
+
+            GetAllAuthorsResponseDto getAllAuthorsResponseDto = new GetAllAuthorsResponseDto();
+
+            getAllAuthorsResponseDto.setName(author.getName());
+            getAllAuthorsResponseDto.setAge(author.getAge());
+            getAllAuthorsResponseDto.setRating(author.getRating());
+            getAllAuthorsResponseDto.setEmail(author.getEmail());
+
+            List<Book> books = author.getBooks();
+            List<BookResponseDto> bookResponseDto = new ArrayList<>();
+            for(Book book: books){
+                BookResponseDto bookResponseDto1 = new BookResponseDto();
+                bookResponseDto1.setTitle(book.getTitle());
+                bookResponseDto1.setId(book.getId());
+                bookResponseDto1.setPrice(book.getPrice());
+                bookResponseDto1.setGenre(book.getGenre().toString());
+                if(book.isIssued()){
+                    bookResponseDto1.setIsIssued("Yes Issued");
+                    bookResponseDto1.setStudentId(book.getCard().getStudent().getName());
+                    bookResponseDto1.setReturnDate(book.getReturnDate());
+                }else{
+                    bookResponseDto1.setIsIssued("Not Issued");
+                    bookResponseDto1.setStudentId(null);
+                    bookResponseDto1.setReturnDate(null);
+                }
+                bookResponseDto.add(bookResponseDto1);
+            }
+            getAllAuthorsResponseDto.setBooks(bookResponseDto);
+
+            getAllAuthorsResponseDtos.add(getAllAuthorsResponseDto);
+
         }
 
         return getAllAuthorsResponseDtos;

@@ -37,9 +37,9 @@ public class StudentController {
             student =studentService.findStudentByEmail(email);
 
         }catch (StudentNotFoundException e){
-            ExceptionMessageResponseDto exception = new ExceptionMessageResponseDto();
-            exception.setMessage(e.getMessage());
-            return new ResponseEntity<>(exception,HttpStatus.valueOf(204)); // 204 no content
+
+            return new ResponseEntity<>(new ExceptionMessageResponseDto(e.getMessage()),
+                    HttpStatus.valueOf(204)); // 204  is no content
         }
         return new ResponseEntity<>(student,HttpStatus.ACCEPTED);
     }

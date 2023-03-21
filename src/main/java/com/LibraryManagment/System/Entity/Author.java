@@ -1,6 +1,7 @@
 package com.LibraryManagment.System.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -33,7 +34,6 @@ public class Author {
 
     private String email;
 
-    //    @JsonManagedReference
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     List<Book> books = new ArrayList<>();
 }

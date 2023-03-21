@@ -20,9 +20,8 @@ public class AuthorController {
         return authorService.addAuthor(authorRequestDto);
     }
 
-//    Error: aborted check
-//    @GetMapping("/getAuthor")
-//    public List<GetAllAuthorsResponseDto> getAuthors(){
-//        return authorService.getAuthors();
-//    }
+    @GetMapping("/getAuthor")
+    public List<GetAllAuthorsResponseDto> getAuthors(){
+        return authorService.getAuthors();
+    }
 }

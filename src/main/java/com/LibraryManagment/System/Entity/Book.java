@@ -1,10 +1,7 @@
 package com.LibraryManagment.System.Entity;
 
 import com.LibraryManagment.System.Enum.Genre;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,8 +33,8 @@ public class Book {
 
     private boolean isIssued;
 
+    private Date returnDate;
 
-    //    @JsonBackReference
     @ManyToOne
     @JoinColumn
     Author author;

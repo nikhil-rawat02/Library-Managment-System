@@ -19,6 +19,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -36,7 +38,6 @@ public class TransactionService {
 
     @Autowired
     JavaMailSender emailSender;
-//    why autuwired javamail sender didn't have any function of class , is it present in dependency
 
     // update card no in book class as well and book issued to
     public IssueResponseDto addIssueTransaction(IssueRequestDto issueRequestDto) throws Exception {
@@ -90,6 +91,10 @@ public class TransactionService {
 
         book.setIssued(true);
         book.setCard(card);
+        // setting date 6 month from now using local date
+        LocalDate localDate = LocalDate.now().plusMonths(6);
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        book.setReturnDate(date);
         book.getListOfTransaction().add(transaction);
         card.setUpdationDate(Date.from(Instant.now()));
         cardRepository.save(card);
